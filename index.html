@@ -1,0 +1,567 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>Kasir Sinar Mulya</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<main class="app" id="app">
+
+  <!-- BERANDA -->
+  <section id="vHome" aria-label="Beranda">
+    <div class="home">
+      <div class="card chartCard">
+        <h2>Transaksi minggu ini</h2>
+        <div class="legend">
+          <span><i style="background:var(--brand-dark)"></i>Transaksi Umum</span>
+          <span><i style="background:var(--brand)"></i>Transaksi Toko Mesin</span>
+        </div>
+        <div id="chart"></div>
+        <p class="note" id="chartNote"></p>
+      </div>
+      <div class="card menu">
+        <svg class="watermark" viewBox="0 0 100 130" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><path d="M50 6C27 6 12 22 12 42c0 13 6 22 14 30 5 5 7 10 7 16v6h34v-6c0-6 2-11 7-16 8-8 14-17 14-30C88 22 73 6 50 6Z"/><path d="M36 100h28M40 112h20"/></svg>
+        <h1>Toko Sinar Mulya</h1>
+        <button class="pill soft" data-go="mesin">Transaksi Toko Mesin</button>
+        <button class="pill" data-go="umum">Transaksi Umum</button>
+        <button class="date" data-date aria-label="Ubah tanggal transaksi"><span class="dateText"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+        <div class="icons"><button class="gear" id="owner" aria-label="Pemilik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 4-7 8-7s8 3 8 7"/></svg></button><button class="gear" id="gear" aria-label="Pengaturan" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1Z"/></svg></button></div>
+        <div class="sheet" id="sheet" hidden>
+          <h3>Pengaturan</h3>
+          <p>Data tersimpan di perangkat ini saja.</p>
+          <button class="pill ghost" id="restock">Isi ulang stok barang</button>
+          <button class="pill ghost" id="resetSales">Atur ulang data penjualan</button>
+          <p id="sheetMsg" role="status"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUB-MENU KHUSUS MESIN -->
+  <section id="vMesinMenu" aria-label="Menu Toko Mesin" hidden>
+    <div class="bar">
+      <button class="back" id="backMesinMenu" aria-label="Kembali ke beranda"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button>
+      <button class="date" data-date aria-label="Ubah tanggal transaksi"><span class="dateText"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+    </div>
+    <div class="card sub-menu-center">
+      <svg class="watermark" viewBox="0 0 100 130" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><path d="M50 6C27 6 12 22 12 42c0 13 6 22 14 30 5 5 7 10 7 16v6h34v-6c0-6 2-11 7-16 8-8 14-17 14-30C88 22 73 6 50 6Z"/><path d="M36 100h28M40 112h20"/></svg>
+      <button class="pill soft" id="btnTagihan">Pembayaran Tagihan</button>
+      <button class="pill soft" id="btnTrxBaruMesin">Transaksi Baru</button>
+    </div>
+  </section>
+
+  <!-- HALAMAN PEMBAYARAN TAGIHAN -->
+  <section id="vTagihan" aria-label="Pembayaran Tagihan" hidden>
+    <div class="bar">
+      <button class="back" id="backTagihan" aria-label="Kembali ke menu mesin"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button>
+      <button class="date" data-date aria-label="Ubah tanggal transaksi"><span class="dateText"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+    </div>
+    <div class="top">
+      <div class="pill soft" style="pointer-events:none">Pembayaran Tagihan</div>
+    </div>
+    <div class="bills-container" id="billsList"></div>
+    <div class="card" id="billPayCard" hidden style="margin-top:16px">
+      <h3 id="billTitle"></h3>
+      <div class="bill-list" id="billItems" style="max-height:none"></div>
+      <div class="total" style="margin-bottom:12px">
+        <span>Total Terpilih</span>
+        <strong id="billSelectedTotal">Rp 0</strong>
+      </div>
+      <div class="pay" style="margin-bottom:12px;grid-template-columns:1fr 1fr">
+        <button class="pill" id="payBillTunai">Tunai</button>
+        <button class="pill" id="payBillTransfer">Transfer</button>
+      </div>
+      <p class="msg" id="billMsg" role="status"></p>
+    </div>
+  </section>
+
+  <!-- TRANSAKSI (KATALOG & KERANJANG) -->
+  <section id="vTrx" aria-label="Transaksi" hidden>
+    <div class="bar">
+      <button class="back" id="back" aria-label="Kembali"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button>
+      <button class="date" data-date aria-label="Ubah tanggal transaksi"><span class="dateText"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg></button>
+    </div>
+    <div class="top">
+      <div class="pill soft" id="modeTitle" style="pointer-events:none">Transaksi Umum</div>
+      <label class="search" for="q">
+        <input id="q" type="search" placeholder="Cari Barang ..." autocomplete="off" aria-label="Cari barang atau kode barcode">
+        <button type="button" id="scan" aria-label="Pindai barcode"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 9V4h5M20 4h5v5M25 19v5h-5M8 24H3v-5"/><path d="M8 9v10M11 9v10M15 9v10M18 9v10M21 9v10" stroke-width="1.6"/></svg></button>
+      </label>
+    </div>
+    <div class="trxBody" id="trxBody">
+      <div class="grid" id="grid"></div>
+      <aside class="cart" id="cart" aria-label="Keranjang"></aside>
+    </div>
+    <button class="fab" id="fab" aria-label="Lihat keranjang"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h4l3 14h14l3-10H9"/><circle cx="12" cy="26" r="2"/><circle cx="23" cy="26" r="2"/></svg><span class="badge" id="badge" hidden>0</span></button>
+  </section>
+
+  <!-- BERHASIL -->
+  <section id="vDone" aria-label="Transaksi berhasil" hidden>
+    <div class="card done pop">
+      <div class="flow" aria-hidden="true">
+        <svg viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="26" cy="58" rx="16" ry="6"/><path d="M10 58v-6c0 3 7 6 16 6s16-3 16-6v6M10 52v-6c0 3 7 6 16 6s16-3 16-6v6"/><ellipse cx="26" cy="40" rx="16" ry="6"/><rect x="44" y="30" width="30" height="20" rx="3"/><circle cx="59" cy="40" r="5"/><path d="M26 14v6M14 18l4 4M38 18l-4 4"/></svg>
+        <svg class="arrow" viewBox="0 0 56 20" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10h50M44 3l8 7-8 7"/></svg>
+        <svg viewBox="0 0 80 80" fill="currentColor"><rect x="6" y="46" width="12" height="26" rx="1"/><rect x="24" y="30" width="12" height="42" rx="1"/><rect x="42" y="38" width="12" height="34" rx="1"/><rect x="60" y="12" width="12" height="60" rx="1"/></svg>
+      </div>
+      <h2>Transaksi Selesai</h2>
+      <p id="doneText"></p>
+      <div class="sum" id="sum"></div>
+      <div class="acts">
+        <button class="pill" id="again">Transaksi Baru</button>
+        <button class="pill ghost" id="toHome">Kembali ke Beranda</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PEMILIK: LOGIN -->
+  <section id="vLogin" hidden>
+    <div class="bar"><button class="back" data-back="home" aria-label="Kembali"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button></div>
+    <div class="card sub-menu-center">
+      <h2 style="margin:0">Pemilik</h2>
+      <input class="field" id="pass" type="password" placeholder="Password" autocomplete="current-password">
+      <button class="pill" id="loginBtn">Masuk</button>
+      <p class="msg" id="loginMsg" role="status"></p>
+    </div>
+  </section>
+
+  <!-- PEMILIK: MENU UTAMA -->
+  <section id="vOwner" hidden>
+    <div class="bar"><button class="back" data-back="home" aria-label="Kembali"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button></div>
+    <div class="card sub-menu-center">
+      <button class="pill soft" data-show="update">Update Barang</button>
+      <button class="pill soft" data-lap="umum">Laporan Penjualan Umum</button>
+      <button class="pill soft" data-lap="mesin">Laporan Toko Mesin</button>
+    </div>
+  </section>
+
+  <!-- PEMILIK: UPDATE BARANG (pilih Barang / Bukti Pembelian) -->
+  <section id="vUpdate" hidden>
+    <div class="bar"><button class="back" data-back="owner" aria-label="Kembali"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button></div>
+    <div class="card sub-menu-center">
+      <button class="pill soft" data-show="barang">Barang</button>
+      <button class="pill soft" data-show="nota">Bukti Pembelian</button>
+    </div>
+  </section>
+
+  <!-- PEMILIK: EDIT BARANG -->
+  <section id="vBarang" hidden>
+    <div class="bar"><button class="back" data-back="update" aria-label="Kembali"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button></div>
+    <div class="top"><div class="pill soft" style="pointer-events:none">Barang</div></div>
+    <div id="barangList"></div>
+  </section>
+
+  <!-- PEMILIK: BUKTI PEMBELIAN -->
+  <section id="vNota" hidden>
+    <div class="bar"><button class="back" data-back="update" aria-label="Kembali"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button></div>
+    <div class="top"><div class="pill soft" style="pointer-events:none">Bukti Pembelian</div></div>
+    <div class="card stack" style="margin-bottom:14px">
+      <input class="field" id="notaDate" type="date" aria-label="Tanggal nota">
+      <input class="field" id="notaNote" type="text" placeholder="Keterangan, misal nama supplier (boleh kosong)">
+      <input class="field" id="notaFile" type="file" accept="image/*" capture="environment" aria-label="Foto nota">
+      <button class="pill" id="notaSave">Simpan Nota</button>
+      <p class="msg" id="notaMsg" role="status"></p>
+    </div>
+    <div id="notaList"></div>
+  </section>
+
+  <!-- PEMILIK: LAPORAN -->
+  <section id="vLap" hidden>
+    <div class="bar"><button class="back" data-back="owner" aria-label="Kembali"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="20" cy="20" r="17"/><path d="M26 20H14M19 14l-6 6 6 6"/></svg></button></div>
+    <div class="top"><div class="pill soft" id="lapTitle" style="pointer-events:none"></div></div>
+    <div id="lapList"></div>
+  </section>
+
+</main>
+<input id="dateInput" type="date" aria-label="Tanggal transaksi" tabindex="-1">
+
+<script>
+(function(){
+  var KEY='sinarmulya.kasir.v1';
+  var BULAN=['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
+  var BLN=['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  var MODE={umum:'Transaksi Umum',mesin:'Transaksi Toko Mesin'};
+  var PRODUCTS=[
+    {id:'h5',w:5,price:12000,stock:9,code:'8991001000051'},
+    {id:'h7',w:7,price:15000,stock:3,code:'8991001000077'},
+    {id:'h9',w:9,price:18000,stock:1,code:'8991001000091'},
+    {id:'h12',w:12,price:20000,stock:10,code:'8991001000121'},
+    {id:'h15',w:15,price:22000,stock:9,code:'8991001000152'},
+    {id:'h18',w:18,price:24000,stock:6,code:'8991001000183'},
+    {id:'h20',w:20,price:26000,stock:2,code:'8991001000206'}
+  ];
+  PRODUCTS.forEach(function(p){p.name='Lampu LED Hori '+p.w+'W'});
+
+  // Data contoh tagihan (utang toko mesin). Tagihan baru otomatis dibuat dari transaksi "Utang".
+  function seedBills(){
+    return [
+      {id:1,date:'2026-10-24',items:[{name:'Lampu LED Hori 5W x 2',price:24000},{name:'Lampu LED Hori 9W x 1',price:18000},{name:'Lampu LED Hori 20W x 1',price:26000}]},
+      {id:2,date:'2026-10-26',items:[{name:'Lampu LED Hori 12W x 5',price:100000},{name:'Lampu LED Hori 15W x 2',price:44000}]}
+    ];
+  }
+
+  var pad=function(n){return String(n).padStart(2,'0')};
+  var ymd=function(d){return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+  var fromYmd=function(s){var a=s.split('-').map(Number);return new Date(a[0],a[1]-1,a[2],12)};
+  var fmtLong=function(s){var d=fromYmd(s);return d.getDate()+' '+BULAN[d.getMonth()]+' '+d.getFullYear()};
+  var fmtShort=function(s){var a=s.split('-');return a[2]+'/'+a[1]+'/'+a[0].slice(2)};
+  var rp=function(n){return 'Rp '+n.toLocaleString('id-ID')};
+  var $=function(id){return document.getElementById(id)};
+
+  function monday(d){var m=new Date(d.getFullYear(),d.getMonth(),d.getDate(),12);m.setDate(m.getDate()-((m.getDay()+6)%7));return m}
+
+  function freshStock(){var s={};PRODUCTS.forEach(function(p){s[p.id]=p.stock});return s}
+  function init(){return {stock:freshStock(),trx:[],bills:seedBills(),info:{},nota:[]}}
+  function load(){
+    try{var r=localStorage.getItem(KEY);if(r){var o=JSON.parse(r);if(o&&o.stock){o.bills=o.bills||seedBills();o.trx=o.trx||[];o.info=o.info||{};o.nota=o.nota||[];return o}}}catch(e){}
+    return init();
+  }
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(S));return true}catch(e){return false}}
+
+  var S=load();
+  var st={view:'home',mode:'umum',cart:{},q:'',pay:'',date:ymd(new Date()),last:null,bill:0,checked:{}};
+
+  /* ---------- TAMPILAN ---------- */
+  function show(v){
+    st.view=v;
+    document.querySelectorAll('main > section').forEach(function(s){s.hidden=s.id!=='v'+v.charAt(0).toUpperCase()+v.slice(1)});
+    window.scrollTo(0,0);
+    if(v==='home')renderChart();
+    if(v==='login'){$('pass').value='';$('loginMsg').textContent=''}
+    if(v==='barang')renderBarang();
+    if(v==='nota'){$('notaDate').value=st.date;renderNota()}
+    if(v==='tagihan'){st.bill=0;st.checked={};renderBills()}
+  }
+  function renderDate(){
+    document.querySelectorAll('.dateText').forEach(function(e){e.textContent=fmtLong(st.date)});
+    $('dateInput').value=st.date;
+  }
+
+  /* ---------- GRAFIK ---------- */
+  function renderChart(){
+    var mon=monday(fromYmd(st.date)),days=[],i;
+    for(i=0;i<7;i++){var d=new Date(mon);d.setDate(mon.getDate()+i);days.push(d)}
+    var cnt=function(k,m){return S.trx.filter(function(t){return t.date===k&&t.mode===m}).length};
+    var rows=days.map(function(d){var k=ymd(d);return {d:d,u:cnt(k,'umum'),m:cnt(k,'mesin')}});
+    var max=Math.max.apply(null,[5].concat(rows.map(function(r){return Math.max(r.u,r.m)})));
+    var step=max<=10?2:max<=25?5:10, top=Math.ceil(max/step)*step;
+    var W=360,H=236,L=42,R=8,T=16,B=40,pw=W-L-R,ph=H-T-B,slot=pw/7,bw=Math.min(16,slot*.32);
+    var y=function(v){return T+ph*(1-v/top)};
+    var g='<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Grafik jumlah transaksi per hari">';
+    for(var t=0;t<=top;t+=step){
+      g+='<line x1="'+L+'" x2="'+(W-R)+'" y1="'+y(t)+'" y2="'+y(t)+'" stroke="var(--grid)" stroke-width="1"/>';
+      g+='<text class="tick" x="'+(L-6)+'" y="'+(y(t)+3.5)+'" text-anchor="end">'+t+'</text>';
+    }
+    g+='<text class="tick" transform="translate(9 '+(T+ph/2)+') rotate(-90)" text-anchor="middle">jumlah transaksi</text>';
+    var todayKey=ymd(new Date());
+    rows.forEach(function(r,k){
+      var cx=L+slot*k+slot/2;
+      if(ymd(r.d)===todayKey)g+='<rect x="'+(cx-slot/2+2)+'" y="'+T+'" width="'+(slot-4)+'" height="'+ph+'" rx="6" fill="var(--brand)" opacity=".15"/>';
+      [[r.u,'var(--brand-dark)',-bw-1],[r.m,'var(--brand)',1]].forEach(function(b){
+        var v=b[0],x=cx+b[2],h=ph*v/top;
+        if(v>0){
+          g+='<rect x="'+x+'" y="'+(y(v))+'" width="'+bw+'" height="'+h+'" rx="3" fill="'+b[1]+'"/>';
+          g+='<text class="val" x="'+(x+bw/2)+'" y="'+(y(v)-3)+'" text-anchor="middle">'+v+'</text>';
+        }
+      });
+      g+='<text class="tick" x="'+cx+'" y="'+(H-B+16)+'" text-anchor="middle">'+r.d.getDate()+' '+BLN[r.d.getMonth()]+'</text>';
+      g+='<text class="tick" x="'+cx+'" y="'+(H-B+28)+'" text-anchor="middle" opacity=".7">'+['Sen','Sel','Rab','Kam','Jum','Sab','Min'][k]+'</text>';
+    });
+    g+='</svg>';
+    $('chart').innerHTML=g;
+    $('chartNote').textContent='Dihitung dari transaksi yang selesai di perangkat ini.';
+  }
+
+  /* ---------- TAGIHAN ---------- */
+  function renderBills(){
+    $('billsList').innerHTML=S.bills.length?S.bills.map(function(b){
+      var tot=b.items.reduce(function(a,it){return a+it.price},0);
+      return '<button class="bill-card'+(b.id===st.bill?' selected':'')+'" data-bill="'+b.id+'" style="text-align:left">'+
+        '<div class="bill-header"><h4>Tagihan '+fmtShort(b.date)+'</h4></div>'+
+        '<div class="bill-total"><span>'+b.items.length+' barang</span><span>'+rp(tot)+'</span></div></button>';
+    }).join(''):'<p class="note">Tidak ada tagihan.</p>';
+    renderBillDetail();
+  }
+
+  // Daftar barang di tagihan yang dipilih (awalnya belum dicentang)
+  function renderBillDetail(){
+    var b=S.bills.find(function(x){return x.id===st.bill});
+    $('billPayCard').hidden=!b;
+    if(!b)return;
+    var total=0;
+    $('billTitle').textContent='Tagihan '+fmtShort(b.date);
+    $('billItems').innerHTML=b.items.map(function(it,i){
+      if(st.checked[i])total+=it.price;
+      return '<label class="bill-item"><input type="checkbox" data-idx="'+i+'"'+(st.checked[i]?' checked':'')+'> <span style="flex:1">'+it.name+'</span><span>'+rp(it.price)+'</span></label>';
+    }).join('');
+    $('billSelectedTotal').textContent=rp(total);
+    $('payBillTunai').disabled=$('payBillTransfer').disabled=!total;
+  }
+
+  /* ---------- BARANG & KERANJANG ---------- */
+  function thumb(p){var w=p.w,ph=(S.info[p.id]||{}).photo;if(ph)return '<img class="thumb" src="'+ph+'" alt="">';
+    return '<svg class="thumb" viewBox="0 0 64 64" aria-hidden="true"><rect x="2" y="2" width="60" height="60" rx="9" fill="var(--box)"/>'+
+      '<text x="32" y="15" text-anchor="middle" font-size="9" fill="#ffd23f" font-family="Lilita One,sans-serif">HORI</text>'+
+      '<path d="M32 19c-8 0-13 5-13 12 0 4 2 7 4 9 1.5 1.5 2 3 2 5h14c0-2 .5-3.500 2-5 2-2 4-5 4-9 0-7-5-12-13-12Z" fill="#fff"/>'+
+      '<rect x="26" y="49" width="12" height="7" rx="2" fill="#c5c9e6"/>'+
+      '<text x="32" y="36" text-anchor="middle" font-size="10" font-weight="800" fill="#2f3f9e" font-family="Open Sans,sans-serif">'+w+'W</text></svg>';
+  }
+  function cartCount(){return Object.keys(st.cart).reduce(function(a,k){return a+st.cart[k]},0)}
+  function cartTotal(){return PRODUCTS.reduce(function(a,p){return a+(st.cart[p.id]||0)*price(p)},0)}
+
+  function renderGrid(){
+    var q=st.q.trim().toLowerCase();
+    var list=PRODUCTS.filter(function(p){return !q||p.name.toLowerCase().indexOf(q)>-1||p.code.indexOf(q)>-1});
+    if(!list.length){$('grid').innerHTML='<p class="note" style="grid-column:1/-1;text-align:center;padding:24px 0">Barang tidak ditemukan.</p>';return}
+    $('grid').innerHTML=list.map(function(p){
+      var stock=S.stock[p.id],n=st.cart[p.id]||0;
+      return '<div style="position:relative">'+
+        '<button class="prod'+(n?' in':'')+'" data-add="'+p.id+'" style="width:100%"'+(stock<1?' disabled':'')+' aria-label="Tambah '+p.name+'">'+
+        thumb(p)+'<span class="name">'+p.name+'</span><span class="meta">'+(stock<1?'Stok habis':'Stock : '+stock)+'</span><span class="price">'+rp(price(p))+'</span></button>'+
+        (n?'<div class="qty" style="position:absolute;top:24px;left:50%;transform:translateX(-50%)">'+qtyHtml(p,n)+'</div>':'')+'</div>';
+    }).join('');
+  }
+  function qtyHtml(p,n){
+    return '<button data-dec="'+p.id+'">&minus;</button><b aria-live="polite">'+n+'</b><button data-inc="'+p.id+'"'+(n>=S.stock[p.id]?' disabled':'')+'>+</button>';
+  }
+  function renderCart(){
+    var n=cartCount(),b=$('badge');
+    b.hidden=!n;b.textContent=n;
+    var h='<h2>Keranjang</h2>';
+    if(!n){
+      h+='<div class="empty"><svg class="ghostbulb" viewBox="0 0 100 130" fill="none" stroke="currentColor" stroke-width="4" aria-hidden="true"><path d="M50 6C27 6 12 22 12 42c0 13 6 22 14 30 5 5 7 10 7 16v6h34v-6c0-6 2-11 7-16 8-8 14-17 14-30C88 22 73 6 50 6Z"/><path d="M52 24 40 48h12l-6 20"/></svg>'+
+        '<svg class="big" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 4h4l3 15h15l3-11H8"/><circle cx="12" cy="26" r="2"/><circle cx="23" cy="26" r="2"/></svg>'+
+        '<span>Keranjang masih kosong ...</span></div>';
+    }else{
+      h+='<div class="items">'+PRODUCTS.filter(function(p){return st.cart[p.id]}).map(function(p){
+        var c=st.cart[p.id];
+        return '<div class="item"><div class="nm">'+p.name+'<small>'+rp(price(p))+' &times; '+c+' = '+rp(price(p)*c)+'</small></div><div class="qty">'+qtyHtml(p,c)+'</div></div>';
+      }).join('')+'</div>';
+      h+='<div class="total"><span>Total</span><strong>'+rp(cartTotal())+'</strong></div>';
+      
+      var isMesin = st.mode === 'mesin';
+      h+='<div class="pay" role="group">' +
+        '<button class="pill'+(st.pay==='tunai'?' sel':'')+'" data-pay="tunai">Tunai</button>' +
+        '<button class="pill'+(st.pay==='transfer'?' sel':'')+'" data-pay="transfer">Transfer</button>' +
+        (isMesin ? '<button class="pill'+(st.pay==='utang'?' sel':'')+'" data-pay="utang">Utang</button>' : '') +
+      '</div>';
+      
+      h+='<p class="msg" id="cartMsg" role="status"></p>';
+      h+='<button class="pill danger" id="finish">Transaksi Selesai</button>';
+    }
+    $('cart').innerHTML=h;
+  }
+
+  function refresh(){renderGrid();renderCart();}
+
+  function change(id,delta){
+    var cur=st.cart[id]||0,next=Math.max(0,Math.min(S.stock[id],cur+delta));
+    if(next)st.cart[id]=next;else delete st.cart[id];
+    refresh();
+  }
+
+  function finish(){
+    if(!cartCount())return;
+    if(!st.pay){$('cartMsg').textContent='Pilih jenis pembayaran dulu.';return}
+    var total=cartTotal(),count=cartCount();
+    PRODUCTS.forEach(function(p){if(st.cart[p.id])S.stock[p.id]=Math.max(0,S.stock[p.id]-st.cart[p.id])});
+    var payLabel=st.pay==='tunai'?'Tunai':(st.pay==='transfer'?'Transfer':'Utang');
+    var items=PRODUCTS.filter(function(p){return st.cart[p.id]}).map(function(p){return {name:p.name+' x '+st.cart[p.id],price:price(p)*st.cart[p.id]}});
+    if(st.pay==='utang'){
+      // utang toko mesin: masuk ke tagihan (satu tagihan per tanggal)
+      var bill=S.bills.find(function(b){return b.date===st.date});
+      if(!bill){bill={id:Date.now(),date:st.date,items:[]};S.bills.push(bill)}
+      items.forEach(function(it){bill.items.push(it)});
+    }
+    addTrx(st.mode,st.pay==='utang'?'utang':'jual',items,payLabel,total);
+    save();
+    $('doneText').textContent=st.pay==='utang'?'Utang dicatat di Pembayaran Tagihan Toko Mesin.':'Penjualan hari ini sudah diperbarui.';
+
+    var payLabel = st.pay==='tunai'?'Tunai':(st.pay==='transfer'?'Transfer':'Utang');
+    st.last={total:total,count:count,pay:st.pay,mode:st.mode};
+    $('sum').innerHTML='<span>Jenis</span><span>'+MODE[st.mode]+'</span><span>Jumlah barang</span><span>'+count+'</span><span>Pembayaran</span><span>'+payLabel+'</span><span>Total</span><span>'+rp(total)+'</span>';
+    st.cart={};st.pay='';st.q='';$('q').value='';
+    show('done');
+  }
+
+  function openTrx(mode){
+    st.mode=mode;st.cart={};st.pay='';st.q='';$('q').value='';
+    $('modeTitle').textContent=MODE[mode];
+    refresh();show('trx');
+  }
+
+  function finishBillPay(payType){
+    var b=S.bills.find(function(x){return x.id===st.bill});
+    if(!b)return;
+    var total=0,sisa=[],paid=[];
+    b.items.forEach(function(it,i){if(st.checked[i]){total+=it.price;paid.push(it)}else sisa.push(it)});
+    if(!total)return;
+    b.items=sisa;
+    if(!sisa.length)S.bills=S.bills.filter(function(x){return x!==b});
+
+    addTrx('mesin','tagihan',paid,payType==='tunai'?'Tunai':'Transfer',total);
+    save();
+
+    st.last={total:total,count:1,pay:payType,mode:'mesin'};
+    st.bill=0;st.checked={};
+    $('doneText').textContent='Pembayaran tagihan masuk ke laporan Toko Mesin.';
+    $('sum').innerHTML='<span>Jenis</span><span>Pelunasan Tagihan</span><span>Pembayaran</span><span>'+(payType==='tunai'?'Tunai':'Transfer')+'</span><span>Total Bayar</span><span>'+rp(total)+'</span>';
+    show('done');
+  }
+
+  /* ---------- EVENT LISTENERS ---------- */
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;
+    if(t.dataset.back)return show(t.dataset.back);
+    if(t.dataset.show)return show(t.dataset.show);
+    if(t.dataset.lap)return openLap(t.dataset.lap);
+    if(t.dataset.bill){st.bill=Number(t.dataset.bill);st.checked={};return renderBills()}
+    if(t.dataset.go){
+      if(t.dataset.go==='mesin'){show('mesinMenu');return;}
+      return openTrx(t.dataset.go);
+    }
+    if(t.dataset.add)return change(t.dataset.add,1);
+    if(t.dataset.inc)return change(t.dataset.inc,1);
+    if(t.dataset.dec)return change(t.dataset.dec,-1);
+    if(t.dataset.pay){st.pay=t.dataset.pay;return renderCart()}
+    if(t.hasAttribute('data-date')){var i=$('dateInput');try{i.showPicker()}catch(x){i.focus()}return}
+  });
+
+  $('billItems').addEventListener('change',function(e){
+    if(e.target.type==='checkbox'){st.checked[e.target.dataset.idx]=e.target.checked;renderBillDetail()}
+  });
+
+  $('payBillTunai').addEventListener('click', function(){ finishBillPay('tunai') });
+  $('payBillTransfer').addEventListener('click', function(){ finishBillPay('transfer') });
+
+  $('btnTagihan').addEventListener('click',function(){show('tagihan')});
+  $('btnTrxBaruMesin').addEventListener('click',function(){openTrx('mesin')});
+  $('backMesinMenu').addEventListener('click',function(){show('home')});
+  $('backTagihan').addEventListener('click',function(){show('mesinMenu')});
+
+  $('cart').addEventListener('click',function(e){if(e.target.id==='finish')finish()});
+  $('back').addEventListener('click',function(){show(st.mode==='mesin'?'mesinMenu':'home')});
+  $('fab').addEventListener('click',function(){st.q='';$('q').value='';refresh();window.scrollTo(0,0)});
+  $('q').addEventListener('input',function(){st.q=this.value;refresh()});
+  $('q').addEventListener('keydown',function(e){
+    if(e.key==='Enter'){var q=st.q.trim();var hit=PRODUCTS.filter(function(p){return p.code===q});if(hit.length&&S.stock[hit[0].id]>0){change(hit[0].id,1);st.q='';this.value='';refresh()}}
+  });
+  $('scan').addEventListener('click',function(){$('q').focus()});
+  $('dateInput').addEventListener('change',function(){if(this.value){st.date=this.value;renderDate();if(st.view==='home')renderChart()}});
+  $('again').addEventListener('click',function(){openTrx(st.last?st.last.mode:'umum')});
+  $('toHome').addEventListener('click',function(){show('home')});
+  $('owner').addEventListener('click',function(){show('login')});
+  $('gear').addEventListener('click',function(){var s=$('sheet');s.hidden=!s.hidden;this.setAttribute('aria-expanded',String(!s.hidden));$('sheetMsg').textContent=''});
+  
+  var armed='';
+  function arm(btn,key,label,run,done){
+    btn.addEventListener('click',function(){
+      if(armed!==key){armed=key;btn.textContent='Ketuk lagi untuk memastikan';setTimeout(function(){if(armed===key){armed='';btn.textContent=label}},3500);return}
+      armed='';btn.textContent=label;run();$('sheetMsg').textContent=done;
+    });
+  }
+  arm($('restock'),'r','Isi ulang stok barang',function(){S.stock=freshStock();save()},'Stok dikembalikan ke jumlah awal.');
+  arm($('resetSales'),'s','Atur ulang data penjualan',function(){S.trx=[];save();renderChart()},'Data penjualan diatur ulang.');
+
+  /* ---------- PEMILIK ---------- */
+  function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+  function priceOf(p,mode){var v=(S.info[p.id]||{})[mode];return v>0?v:p.price}
+  function price(p){return priceOf(p,st.mode)}
+
+  // catat satu transaksi (dipakai laporan & grafik)
+  function addTrx(mode,type,items,pay,total){
+    var n=new Date();
+    S.trx.push({date:st.date,time:pad(n.getHours())+':'+pad(n.getMinutes()),mode:mode,type:type,items:items,pay:pay,total:total});
+  }
+
+  // kecilkan foto supaya muat di penyimpanan
+  function readImage(file,max,cb){
+    var r=new FileReader();
+    r.onload=function(){var im=new Image();im.onload=function(){
+      var k=Math.min(1,max/Math.max(im.width,im.height)),cv=document.createElement('canvas');
+      cv.width=im.width*k;cv.height=im.height*k;cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);
+      cb(cv.toDataURL('image/jpeg',.7))};im.src=r.result};
+    r.readAsDataURL(file);
+  }
+
+  $('loginBtn').addEventListener('click',function(){
+    if($('pass').value===(S.pass||'sinar123'))show('owner');else $('loginMsg').textContent='Password salah.';
+  });
+  $('pass').addEventListener('keydown',function(e){if(e.key==='Enter')$('loginBtn').click()});
+
+  // Update barang: stok, harga umum, harga toko mesin, foto
+  function renderBarang(){
+    $('barangList').innerHTML=PRODUCTS.map(function(p){
+      var ph=(S.info[p.id]||{}).photo;
+      return '<div class="card edit">'+(ph?'<img src="'+ph+'" alt="">':thumb(p))+
+        '<div class="stack"><b>'+p.name+'</b>'+
+        '<label>Stok<input type="number" min="0" class="fStok" value="'+S.stock[p.id]+'"></label>'+
+        '<label>Harga Umum<input type="number" min="0" class="fU" value="'+priceOf(p,'umum')+'"></label>'+
+        '<label>Harga Toko Mesin<input type="number" min="0" class="fM" value="'+priceOf(p,'mesin')+'"></label>'+
+        '<label>Foto<input type="file" accept="image/*" class="fFoto"></label>'+
+        '<button class="pill" data-saveitem="'+p.id+'">Simpan</button><p class="msg"></p></div></div>';
+    }).join('');
+  }
+  $('barangList').addEventListener('click',function(e){
+    var id=e.target.dataset.saveitem;if(!id)return;
+    var box=e.target.closest('.edit'),msg=box.querySelector('.msg'),f=box.querySelector('.fFoto').files[0];
+    var inf=S.info[id]||(S.info[id]={});
+    S.stock[id]=Math.max(0,Number(box.querySelector('.fStok').value)||0);
+    inf.umum=Number(box.querySelector('.fU').value)||0;
+    inf.mesin=Number(box.querySelector('.fM').value)||0;
+    function done(){msg.textContent=save()?'Tersimpan.':'Gagal menyimpan (memori penuh).'}
+    if(f)readImage(f,300,function(d){inf.photo=d;done();renderBarang()});else done();
+  });
+
+  // Bukti pembelian: foto nota kulakan
+  function renderNota(){
+    $('notaList').innerHTML=S.nota.slice().reverse().map(function(n){
+      return '<div class="card nota"><div><b>'+fmtLong(n.date)+'</b>'+(n.note?' - '+esc(n.note):'')+'</div><img src="'+n.img+'" alt="Nota">'+
+        '<button class="pill ghost" data-delnota="'+n.id+'">Hapus</button></div>';
+    }).join('')||'<p class="note">Belum ada nota.</p>';
+  }
+  $('notaSave').addEventListener('click',function(){
+    var f=$('notaFile').files[0],msg=$('notaMsg');
+    if(!f){msg.textContent='Foto atau pilih gambar nota dulu.';return}
+    readImage(f,1000,function(d){
+      S.nota.push({id:Date.now(),date:$('notaDate').value||st.date,note:$('notaNote').value.trim(),img:d});
+      if(!save()){S.nota.pop();msg.textContent='Gagal menyimpan (memori penuh). Hapus nota lama dulu.';return}
+      $('notaFile').value='';$('notaNote').value='';msg.textContent='Nota tersimpan.';renderNota();
+    });
+  });
+  $('notaList').addEventListener('click',function(e){
+    var id=e.target.dataset.delnota;
+    if(id&&confirm('Hapus nota ini?')){S.nota=S.nota.filter(function(n){return String(n.id)!==id});save();renderNota()}
+  });
+
+  // Laporan per hari
+  function openLap(mode){
+    st.lap=mode;
+    $('lapTitle').textContent='Laporan '+(mode==='mesin'?'Toko Mesin':'Penjualan Umum');
+    var days={};
+    S.trx.forEach(function(t){if(t.mode===mode)(days[t.date]=days[t.date]||[]).push(t)});
+    var keys=Object.keys(days).sort().reverse();
+    $('lapList').innerHTML=keys.length?keys.map(function(d){
+      var list=days[d],income=0;
+      list.forEach(function(t){if(t.type!=='utang')income+=t.total}); // utang belum jadi pendapatan
+      return '<div class="card" style="margin-bottom:14px"><h3 style="margin:0 0 8px">'+fmtLong(d)+'</h3>'+
+        '<div class="total"><span>'+list.length+' transaksi</span><span>Pendapatan <strong>'+rp(income)+'</strong></span></div>'+
+        list.map(function(t){
+          var lbl=t.type==='utang'?'Utang (belum dibayar)':t.type==='tagihan'?'Pelunasan tagihan':'Penjualan';
+          return '<div class="trx"><b>'+t.time+' - '+lbl+' - '+t.pay+'</b><span style="float:right">'+rp(t.total)+'</span>'+
+            '<small>'+t.items.map(function(i){return esc(i.name)}).join(', ')+'</small></div>';
+        }).join('')+'</div>';
+    }).join(''):'<p class="note">Belum ada transaksi.</p>';
+    show('lap');
+  }
+
+  renderDate();renderChart();refresh();
+})();
+</script>
+
+</body>
+</html>
